@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plataforma Estudiantes - M&A Spanish Express</title>
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    // Si NO hay sesión, redirige a login.html
+    if (!localStorage.getItem('loggedUser')) window.location.href = 'login.html';
+  </script>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar-canvas" id="sidebar">
+      <div class="logo"><img src="https://i.imgur.com/2Jg2gCw.png" alt="M&A Spanish Express" /></div>
+      <nav class="canvas-links" id="mainMenuLinks">
+        <a href="#" data-section="inicio" class="active"><span class="icon">🏠</span><span>Inicio</span></a>
+        <a href="#" data-section="grupos"><span class="icon">👥</span><span>Grupos</span></a>
+        <a href="#" data-section="calendario"><span class="icon">📅</span><span>Calendario</span></a>
+        <a href="#" data-section="anuncios"><span class="icon">📢</span><span>Anuncios</span></a>
+        <a href="#" data-section="guia"><span class="icon">📖</span><span>Guía</span></a>
+        <a href="#" data-section="modulos"><span class="icon">📚</span><span>Módulos</span></a>
+        <a href="#" data-section="tareas"><span class="icon">📝</span><span>Tareas</span></a>
+        <a href="#" data-section="foros"><span class="icon">💬</span><span>Foros</span></a>
+        <a href="#" data-section="evaluaciones"><span class="icon">🧪</span><span>Evaluaciones</span></a>
+        <a href="#" data-section="calificaciones"><span class="icon">📊</span><span>Calificaciones</span></a>
+        <a href="#" data-section="archivos"><span class="icon">🗂️</span><span>Archivos</span></a>
+        <a href="#" data-section="personas"><span class="icon">👤</span><span>Personas</span></a>
+        <a href="#" data-section="configuracion"><span class="icon">⚙️</span><span>Config.</span></a>
+      </nav>
+      <button id="toggleThemeBtn" class="theme-btn" title="Alternar tema">🌙</button>
+    </aside>
+    <main>
+      <header class="canvas-header">
+        <div class="header-left">
+          <button id="sidebarToggle" class="sidebar-toggle" title="Abrir/cerrar menú">☰</button>
+          <h1>M&A Spanish Express</h1>
+        </div>
+        <div class="header-center">
+          <input type="text" id="globalSearch" class="global-search" placeholder="Buscar en la plataforma...">
+        </div>
+        <div class="header-right">
+          <span id="notificationBell" class="notif-bell" title="Notificaciones">🔔</span>
+          <div class="user-info" id="userInfo">
+            <img src="" alt="Avatar" class="avatar-thumb" id="userAvatarThumb" style="display:none;">
+            <span id="usernameDisplay"></span>
+            <button class="profile-btn" id="profileBtn" title="Mi perfil">👤</button>
+            <button class="logout-btn" id="logoutBtn" title="Cerrar sesión">Salir</button>
+          </div>
+        </div>
+      </header>
+      <div class="notif-dropdown" id="notifDropdown"></div>
+      <div class="main-canvas-content">
+        <div class="canvas-sections">
+          <div class="canvas-section" id="section-inicio">
+            <h2>Bienvenido a M&A Spanish Express</h2>
+            <p>Explora todas las secciones desde el menú. Usa el buscador global para encontrar recursos y mantente atento a tus notificaciones.</p>
+          </div>
+          <div class="canvas-section" id="section-grupos" style="display:none;">
+            <h2>Grupos</h2>
+            <form id="grupoForm" class="grupo-form">
+              <input type="text" id="grupoNombre" required placeholder="Nombre del grupo">
+              <input type="text" id="grupoDesc" required placeholder="Descripción breve">
+              <button type="submit" class="btn">Crear grupo</button>
+            </form>
+            <div id="gruposLista"></div>
+          </div>
+          <div class="canvas-section" id="section-calendario" style="display:none;">
+            <h2>Calendario</h2>
+            <div class="calendar-wrapper">
+              <div class="calendar-header">
+                <button id="prevMonthBtn">&lt;</button>
+                <span id="calendarMonth"></span>
+                <button id="nextMonthBtn">&gt;</button>
+              </div>
+              <table class="calendar-table">
+                <thead>
+                  <tr>
+                    <th>Lun</th><th>Mar</th><th>Mié</th><th>Jue</th><th>Vie</th><th>Sáb</th><th>Dom</th>
+                  </tr>
+                </thead>
+                <tbody id="calendarBody"></tbody>
+              </table>
+              <form class="calendar-event-form" id="calendarEventForm">
+                <input type="date" id="eventDate" required>
+                <input type="text" id="eventTitle" required placeholder="Título del evento" maxlength="32">
+                <input type="text" id="eventDesc" placeholder="Descripción (opcional)" maxlength="60">
+                <button type="submit">Agregar evento</button>
+              </form>
+              <h4 class="cal-events-title">Eventos del mes</h4>
+              <ul class="calendar-events-list" id="calendarEventsList"></ul>
+            </div>
+          </div>
+          <!-- Resto de secciones, personalizables -->
+          <div class="canvas-section" id="section-anuncios" style="display:none;">
+            <h2>Anuncios</h2>
+            <ul class="anuncios-list" id="anunciosList"></ul>
+          </div>
+          <div class="canvas-section" id="section-guia" style="display:none;">
+            <h2>Guía Didáctica</h2>
+            <div class="guia-content">
+              <p>Accede aquí a la guía, metodología y recursos clave del curso.</p>
+              <ul>
+                <li>Objetivos claros y cronograma</li>
+                <li>Enlace a materiales PDF y multimedia</li>
+                <li>Consejos de estudio</li>
+              </ul>
+            </div>
+          </div>
+          <div class="canvas-section" id="section-modulos" style="display:none;">
+            <h2>Módulos</h2>
+            <ul class="modulos-list" id="modulosList"></ul>
+          </div>
+          <div class="canvas-section" id="section-tareas" style="display:none;">
+            <h2>Tareas</h2>
+            <ul class="tareas-list" id="tareasList"></ul>
+          </div>
+          <div class="canvas-section" id="section-foros" style="display:none;">
+            <h2>Foros</h2>
+            <ul class="foros-list" id="forosList"></ul>
+          </div>
+          <div class="canvas-section" id="section-evaluaciones" style="display:none;">
+            <h2>Evaluaciones</h2>
+            <ul class="evals-list" id="evalsList"></ul>
+          </div>
+          <div class="canvas-section" id="section-calificaciones" style="display:none;">
+            <h2>Calificaciones</h2>
+            <div id="calificacionesContent"></div>
+          </div>
+          <div class="canvas-section" id="section-archivos" style="display:none;">
+            <h2>Archivos</h2>
+            <ul class="archivos-list" id="archivosList"></ul>
+          </div>
+          <div class="canvas-section" id="section-personas" style="display:none;">
+            <h2>Personas</h2>
+            <ul class="personas-list" id="personasList"></ul>
+          </div>
+          <div class="canvas-section" id="section-configuracion" style="display:none;">
+            <h2>Configuración y perfil</h2>
+            <form id="perfilForm" class="perfil-form">
+              <label>Nombre:</label>
+              <input type="text" id="perfilNombreInput" required>
+              <label>Usuario:</label>
+              <input type="text" id="perfilUsernameInput" required disabled>
+              <label>Cambiar foto de perfil:</label>
+              <input type="file" id="perfilAvatarInput" accept="image/*">
+              <button type="submit">Guardar cambios</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <footer>&copy; 2025 M&A Spanish Express · info@maspanishexpress.com</footer>
+    </main>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
